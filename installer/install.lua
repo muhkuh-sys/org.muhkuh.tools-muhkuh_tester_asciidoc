@@ -240,11 +240,18 @@ local function actionDocBuilder(tInstallHelper)
 
         end
 
+        -- Build 2 different represenataions of the parameters to make life easier in lustache.
+        -- Accessing a specific parameter is easy if the name of the parameter is used as a key.
+        -- Lustache example accessing the parameter "usb_product_id_blank": {parameter.usb_product_id_blank.value}
+        -- Another use case is listing all parameters. Iterating over a table with key-value pairs is not so easy in
+        -- Lustache. Iterating over a list is much easier.
         local tParameter = {}
+        local tParameterList = {}
         local tViewAttr = {
           docfile = strDocPath,
           name = strTestCaseName,
-          parameter = tParameter
+          parameter = tParameter,
+          parameter_list = tParameterList
         }
         -- Set all default parameter.
         if strParameterPath~=nil then
@@ -282,12 +289,14 @@ local function actionDocBuilder(tInstallHelper)
                 }
                 local strDefault = tAttr.default
                 if strDefault~=nil then
+                  tP.name = strName
                   tP.type = 'default'
                   tP.value = strDefault
                   tP.default = strDefault
                   tP.description = tAttr.description
                 end
                 tParameter[strName] = tP
+                table.insert(tParameterList, tP)
               end
             end
           end
@@ -302,6 +311,7 @@ local function actionDocBuilder(tInstallHelper)
               name = strName
             }
             tParameter[strName] = tP
+            table.insert(tParameterList, tP)
           end
           if tEntry.value~=nil then
             tP.type = 'constant'
