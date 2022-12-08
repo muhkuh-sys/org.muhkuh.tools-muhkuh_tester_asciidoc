@@ -285,6 +285,7 @@ local function actionDocBuilder(tInstallHelper)
                   tP.type = 'default'
                   tP.value = strDefault
                   tP.default = strDefault
+                  tP.description = tAttr.description
                 end
                 tParameter[strName] = tP
               end
