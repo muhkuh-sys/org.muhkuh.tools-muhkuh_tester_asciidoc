@@ -14,7 +14,7 @@ This chapter decribes all steps in the production test.
 {{#test_steps}}
 === {{name}}
 {{#if}}{{docfile==nil}}
-No documentation
+This test step has no documentation.
 {{/if}}
 
 {{#if}}{{docfile~=nil}}
