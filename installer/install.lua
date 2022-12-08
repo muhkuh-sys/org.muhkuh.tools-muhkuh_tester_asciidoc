@@ -137,6 +137,19 @@ local function actionDocBuilder(tInstallHelper)
       -- Copy all documentation links.
       atRootView.documentation_links = tTestDescription:getDocuments()
 
+      -- Check if there is a default documentation.
+      local strDefaultDocPath = 'missing_test_description.mustache.asciidoc'
+      local strDefaultDocPathAbs = pl.path.abspath(
+        strDefaultDocPath,
+        tInstallHelper:replace_template('${build_doc}')
+      )
+      if pl.path.exists(strDefaultDocPathAbs)==strDefaultDocPathAbs then
+        tLog.debug('Found default documentation in %s', strDefaultDocPathAbs)
+      else
+        strDefaultDocPath = nil
+        strDefaultDocPathAbs = nil
+      end
+
       -- Collect the documentation for all test cases.
       local uiTestCaseStepMax = tTestDescription:getNumberOfTests()
       for uiTestCaseStepCnt = 1,uiTestCaseStepMax do
@@ -156,7 +169,32 @@ local function actionDocBuilder(tInstallHelper)
           tLog.debug('Looking for documentation in "%s".', strDocPathAbs)
           if pl.path.exists(strDocPathAbs)~=strDocPathAbs then
             tLog.warning('The test %s has no documentation.', strTestCaseName)
-            strDocPath = nil
+            if strDefaultDocPath==nil then
+              strDocPath = nil
+            else
+              local strDocDirAbs = pl.path.dirname(strDocPathAbs)
+              if pl.path.exists(strDocDirAbs)~=strDocDirAbs then
+                -- The destination path for the default documentation does not exist.
+                local tDirResult, strDirError = pl.dir.makepath(strDocDirAbs)
+                if tDirResult~=true then
+                  tLog.warning(
+                    'Failed to create the folder "%s" for the default documentation: %s',
+                    strDocDirAbs,
+                    strDirError
+                  )
+                  strDocDirAbs = nil
+                end
+              elseif pl.path.isdir(strDocDirAbs)~=true then
+                tLog.warning(
+                  'The path for the default documentation exists, but it is no folder: %s',
+                  strDocDirAbs
+                )
+                strDocDirAbs = nil
+              end
+              if strDocDirAbs~=nil then
+                pl.file.copy(strDefaultDocPathAbs, strDocPathAbs)
+              end
+            end
           end
 
           -- Get the installation path of the parameter file.
@@ -182,6 +220,18 @@ local function actionDocBuilder(tInstallHelper)
             tLog.debug('Found documentation in "%s".', strDocPath)
           end
 
+          -- If the local test step has no documentation and there is a default documentation, create a file with
+          -- the name "teststep"
+          if strDocPath==nil and strDefaultDocPath~=nil then
+            strDocPath = string.format(
+              'teststep%02d%s',
+              uiTestCaseStepCnt,
+              atConfiguration.strSuffix
+            )
+            local strDocPathAbs = pl.path.abspath(strDocPath, tInstallHelper:replace_template('${build_doc}'))
+            pl.file.copy(strDefaultDocPathAbs, strDocPathAbs)
+            tLog.debug('Copied default documentation to %s', strDocPathAbs)
+          end
 
         else
           tLog.error('The test %s has no "id" or "file" attribute.', strTestCaseName)
