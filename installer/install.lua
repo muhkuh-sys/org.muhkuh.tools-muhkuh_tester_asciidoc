@@ -213,16 +213,21 @@ local function actionDocBuilder(tInstallHelper)
           if strDocPath==nil or strDocPath=='' then
             tLog.warning('The test %s has no documentation.', strTestCaseName)
             strDocPath = nil
-          elseif pl.path.exists(strDocPath)~=strDocPath then
-            tLog.warning('The specified documentation "%s" for test %s does not exist.', strDocPath, strTestCaseName)
-            strDocPath = nil
           else
-            tLog.debug('Found documentation in "%s".', strDocPath)
+            local strDocPathAbs = pl.path.abspath(strDocPath, tInstallHelper:replace_template('${build_doc}'))
+            tLog.debug('Looking for documentation in "%s".', strDocPathAbs)
+            if pl.path.exists(strDocPathAbs)~=strDocPathAbs then
+              tLog.warning('The specified documentation "%s" for test %s does not exist.', strDocPathAbs, strTestCaseName)
+              strDocPath = nil
+            else
+              tLog.debug('Found documentation in "%s".', strDocPathAbs)
+            end
           end
 
           -- If the local test step has no documentation and there is a default documentation, create a file with
           -- the name "teststep"
           if strDocPath==nil and strDefaultDocPath~=nil then
+            -- Create a new default name for the documentation.
             strDocPath = string.format(
               'teststep%02d%s',
               uiTestCaseStepCnt,
