@@ -233,6 +233,17 @@ local function actionDocBuilder(tInstallHelper)
             tLog.debug('Copied default documentation to %s', strDocPathAbs)
           end
 
+          -- Get the path of the parameter file.
+          strParameterPath = tTestDescription:getTestCaseParameterFile(uiTestCaseStepCnt)
+          if strParameterPath~=nil then
+            tLog.debug('Looking for parameter in "%s".', strParameterPath)
+            if pl.path.exists(strParameterPath)~=strParameterPath then
+              strParameterPath = nil
+            end
+          end
+          if strParameterPath==nil then
+            tLog.warning('The test %s has no parameter file.', strTestCaseName)
+          end
         else
           tLog.error('The test %s has no "id" or "file" attribute.', strTestCaseName)
           tResult = nil
