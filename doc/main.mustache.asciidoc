@@ -5,8 +5,6 @@
 :rouge-style: base16.solarized.dark
 :toc:
 
-This is a command line test using the "Tester CLI" framework. The chapter <<Tester_CLI>> describes how to run tests, set parameters and collect logs.
-
 == Test steps
 
 This chapter decribes all steps in the production test.
@@ -33,13 +31,3 @@ This test step has no documentation.
 {{#documentation_links}}
 * link:++{{{url}}}++[{{name}}]
 {{/documentation_links}}
-
-
-[[Tester_CLI, Tester CLI]]
-== Tester CLI
-
-:leveloffset: +2
-:imagesdir: org.muhkuh.tools-muhkuh_tester_cli
-include::org.muhkuh.tools-muhkuh_tester_cli/main.asciidoc[]
-
-:leveloffset: -2
