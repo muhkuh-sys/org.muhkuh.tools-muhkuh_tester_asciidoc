@@ -296,15 +296,14 @@ local function actionDocBuilder(tInstallHelper)
               for _, tAttr in ipairs(tParameterData.parameter) do
                 local strName = tAttr.name
                 local tP = {
-                  name = strName
+                  name = strName,
+                  description = tAttr.description
                 }
                 local strDefault = tAttr.default
                 if strDefault~=nil then
-                  tP.name = strName
                   tP.type = 'default'
                   tP.value = strDefault
                   tP.default = strDefault
-                  tP.description = tAttr.description
                 end
                 tParameter[strName] = tP
                 table.insert(tParameterList, tP)
