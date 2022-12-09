@@ -3,7 +3,7 @@ The test step has no documentation. This is a minimal default text.
 # Parameter
 
 The following table shows all parameters for this test step.
-The "value" colum shows the assigned value.
+The "value" column shows the assigned value.
 Some parameters have a defaul value, which is listed in the column "default". If the default value is not overwritten, the "value" column is empty. Furthermore a parameter can be connected to a system parameter or the output of another test step. In this case the value field shows "connected to" with the source of the value.
 
 .List of all parameters
