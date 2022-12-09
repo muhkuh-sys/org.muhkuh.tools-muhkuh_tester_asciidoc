@@ -1,0 +1,30 @@
+The test step {{name}} checks if the device under test suffers from purranoia.
+The test places an artificial cat paw over the device. If the device starts to sweat, it is affected.
+
+# Parameter
+
+The following table shows all parameters for this test step.
+The "value" column shows the assigned value.
+Some parameters have a defaul value, which is listed in the column "default". If the default value is not overwritten, the "value" column is empty. Furthermore a parameter can be connected to a system parameter or the output of another test step. In this case the value field shows "connected to" with the source of the value.
+
+.List of all parameters
+|===
+| Name        | value | default | description
+
+{{#parameter_list}}
+{{#if}}{{type=='connection'}}| `{{name}}` | connected to `{{value}}` | {{#default}}`{{default}}`{{/default}} | {{description}}{{/if}}
+{{#if}}{{type=='constant'}}| `{{name}}` | `{{value}}` | {{#default}}`{{default}}`{{/default}} | {{description}}{{/if}}
+{{#if}}{{type=='default'}}| `{{name}}` | _see default_ | {{#default}}`{{default}}`{{/default}} | {{description}}{{/if}}
+{{/parameter_list}}
+|===
+
+# Overview
+
+[graphviz,format="svg"]
+....
+include::test_flow.gv[]
+....
+
+# Details
+
+First the test step places the artificial paw at the position X=`{{parameter.paw_x.value}}` and Y=`{{parameter.paw_y.value}}`. Then it waits for `{{parameter.delay.value}}` seconds. After the delay it runs a sweat detection with an ion-selective electrode sensor. By the Nernst equation, the logarithm of the target ion activity can be related to the voltage allowing selectivity to be achieved by direct potentiometry. If the measured voltage is above `{{parameter.sweat_border_voltage.value}}` mV, the device is considered to be sweating.

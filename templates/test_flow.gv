@@ -1,0 +1,54 @@
+# Place the cursor inside "graph" to get some refactoring options
+
+digraph {
+start [
+    shape = box,
+    style = "rounded",
+    label = "Purranoia\nInit"
+]
+start -> state0 []
+
+state0 [
+    shape = box,
+    label = "Hold artificial\ncat paw over\nthe device.",
+    style = "filled",
+    fillcolor = "yellow"
+]
+state0 -> state1 []
+
+state1 [
+    shape = box,
+    label = "Delay.",
+    style = "filled",
+    fillcolor = "yellow"
+]
+state1 -> if0 []
+
+if0 [
+    shape = diamond,
+    label = "Device\nstarts to\nsweat?"
+]
+if0 -> finish0 [
+    label = "Yes",
+    decorate = true
+]
+if0 -> err0 [
+    label = "No",
+    weight = "0.1",
+    decorate = true
+]
+
+finish0 [
+    shape = box,
+    label = "Test OK",
+    style = "filled,rounded",
+    fillcolor = "green"
+]
+
+err0 [
+    shape = box,
+    label = "Error\nDevice suffers\nfrom purranoia.",
+    style = "filled",
+    fillcolor = "red"
+]
+}
