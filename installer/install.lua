@@ -440,7 +440,7 @@ local function actionDocBuilder(tInstallHelper)
       -- Mount the documentation source path.
       '-v', string.format('%s:/documents/', strAsciidocSourcePath),
       -- Use the "docker-asciidoctor" image.
-      'docker.io/asciidoctor/docker-asciidoctor',
+      'docker.io/asciidoctor/docker-asciidoctor:1.51',
 
       'asciidoctor',
 
