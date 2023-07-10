@@ -3,6 +3,8 @@
 :icons: font
 :source-highlighter: rouge
 :rouge-style: base16.solarized.dark
+:stem:
+:imagesoutdir: /documents/generated/images/
 :toc:
 
 == Test steps
