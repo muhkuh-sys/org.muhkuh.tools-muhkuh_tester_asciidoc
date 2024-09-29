@@ -549,7 +549,11 @@ local function actionDocInstaller(tInstallHelper)
       local tCopyResult = pl.file.copy(strSrc, strDst, true)
       if tCopyResult==true then
         tLog.debug('Copied documentation to %s', strDst)
-        tInstallHelper:add_replacement('documentation_path', strDst)
+        tInstallHelper:add_release(
+          strDst,
+          'pdf',
+          ''
+        )
         tResult = true
       else
         tLog.error('Failed to copy the documentation from %s to %s .', strSrc, strDst)
